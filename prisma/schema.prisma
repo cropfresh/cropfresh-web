@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Early Access Form Submissions
+model EarlyAccessSubmission {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String
+  location  String
+  role      Role
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([createdAt])
+  @@index([role])
+  @@map("early_access_submissions")
+}
+
+enum Role {
+  farmer
+  retailer
+  logistics
+  investor
+  other
+}
+
+// Page View Analytics
+model PageView {
+  id        String   @id @default(uuid())
+  page      String
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([page])
+  @@index([createdAt])
+  @@map("page_views")
+}
+
+// Form Interaction Analytics
+model FormInteraction {
+  id        String             @id @default(uuid())
+  formName  String
+  action    FormAction
+  fieldName String?
+  createdAt DateTime           @default(now())
+
+  @@index([formName])
+  @@index([action])
+  @@index([createdAt])
+  @@map("form_interactions")
+}
+
+enum FormAction {
+  started
+  field_filled
+  submitted
+  abandoned
+}
