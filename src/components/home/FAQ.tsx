@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, MessageCircle } from 'lucide-react';
+import { ChevronDown, MessageCircle, Plus, Minus } from 'lucide-react';
 
 const faqData = {
     farmers: [
@@ -144,21 +144,19 @@ function FAQItem({ item, index }: FAQItemProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.05 }}
-            className="border border-gray-200 rounded-xl overflow-hidden bg-white"
+            className="glass-card rounded-2xl overflow-hidden border border-white/60 mb-4"
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/40 transition-colors"
             >
                 <div className="flex-1 pr-4">
-                    <div className="font-bold text-neutral-gray mb-1">{item.question}</div>
+                    <div className="font-bold text-neutral-gray mb-1 text-lg">{item.question}</div>
                     <div className="text-sm text-gray-500">{item.questionKn}</div>
                 </div>
-                <ChevronDown
-                    className={`flex-shrink-0 text-primary-green transition-transform duration-300 ${isOpen ? 'rotate-180' : ''
-                        }`}
-                    size={24}
-                />
+                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-primary-green text-white rotate-180' : 'bg-gray-100 text-gray-500'}`}>
+                    {isOpen ? <Minus size={18} /> : <Plus size={18} />}
+                </div>
             </button>
 
             <AnimatePresence>
@@ -167,12 +165,12 @@ function FAQItem({ item, index }: FAQItemProps) {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="overflow-hidden"
                     >
-                        <div className="px-6 pb-4 pt-2 border-t border-gray-100 bg-gray-50">
-                            <p className="text-gray-700 mb-2">{item.answer}</p>
-                            <p className="text-gray-600 text-sm">{item.answerKn}</p>
+                        <div className="px-6 pb-6 pt-2 border-t border-gray-100/50">
+                            <p className="text-gray-700 mb-3 leading-relaxed">{item.answer}</p>
+                            <p className="text-gray-500 text-sm italic">{item.answerKn}</p>
                         </div>
                     </motion.div>
                 )}
@@ -183,8 +181,13 @@ function FAQItem({ item, index }: FAQItemProps) {
 
 export default function FAQ() {
     return (
-        <section className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
-            <div className="container mx-auto px-4 md:px-6">
+        <section className="py-24 relative overflow-hidden">
+            {/* Background Elements */}
+            <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white to-background-light" />
+            <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-primary-green/5 rounded-full blur-[100px]" />
+            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary-orange/5 rounded-full blur-[100px]" />
+
+            <div className="container mx-auto px-4 md:px-6 relative z-10">
                 {/* Header */}
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <motion.div
@@ -221,16 +224,21 @@ export default function FAQ() {
                                 initial={{ opacity: 0, x: -20 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
-                                className="text-2xl font-bold font-display text-neutral-gray mb-6"
+                                className="text-2xl font-bold font-display text-neutral-gray mb-6 flex items-center gap-3"
                             >
-                                <span className="text-primary-green">🌾 </span>
-                                {categoryNames[category as keyof typeof categoryNames].en}
-                                <span className="text-gray-500 text-lg ml-3">
-                                    {categoryNames[category as keyof typeof categoryNames].kn}
+                                <span className="text-2xl">
+                                    {category === 'farmers' && '🌾'}
+                                    {category === 'buyers' && '🛒'}
+                                    {category === 'haulers' && '🚚'}
+                                    {category === 'general' && '💡'}
+                                </span>
+                                <span>{categoryNames[category as keyof typeof categoryNames].en}</span>
+                                <span className="text-gray-400 text-lg font-normal">
+                                    / {categoryNames[category as keyof typeof categoryNames].kn}
                                 </span>
                             </motion.h3>
 
-                            <div className="space-y-3">
+                            <div className="space-y-1">
                                 {items.map((item, index) => (
                                     <FAQItem key={index} item={item} index={index} />
                                 ))}
@@ -246,12 +254,12 @@ export default function FAQ() {
                     viewport={{ once: true }}
                     className="text-center mt-16"
                 >
-                    <p className="text-lg text-gray-600 mb-4">
+                    <p className="text-lg text-gray-600 mb-6">
                         Still have questions? / ಇನ್ನೂ ಪ್ರಶ್ನೆಗಳಿವೆಯೇ?
                     </p>
                     <a
                         href="#early-access"
-                        className="inline-block bg-primary-green text-white px-8 py-4 rounded-full font-bold hover:bg-primary-green/90 transition-colors shadow-lg hover:shadow-xl"
+                        className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary-green to-green-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg hover:shadow-primary-green/30 transition-all transform hover:-translate-y-1"
                     >
                         Get Early Access / ಆರಂಭಿಕ ಪ್ರವೇಶ ಪಡೆಯಿರಿ
                     </a>

@@ -16,7 +16,7 @@ export default function Header() {
             setIsScrolled(window.scrollY > 20);
 
             // Update active section based on scroll position
-            const sections = ['solutions', 'technology', 'impact', 'about'];
+            const sections = ['home', 'problems', 'solutions', 'impact', 'faq', 'about'];
             const current = sections.find(section => {
                 const element = document.getElementById(section);
                 if (element) {
@@ -32,43 +32,45 @@ export default function Header() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const navItems = ['Solutions', 'Technology', 'Impact', 'About'];
+    const navItems = ['Home', 'Problems', 'Solutions', 'Impact', 'FAQ', 'About'];
 
     return (
         <header
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                ? 'py-3 glass-effect shadow-sm'
+                ? 'py-3 glass-effect shadow-sm border-b border-white/20'
                 : 'py-6 bg-transparent'
                 }`}
         >
-            <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-                {/* Logo */}
-                <Link href="/" className="flex items-center gap-3 group relative z-10">
-                    <motion.div
-                        whileHover={{ scale: 1.08, rotate: 5 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                    >
+            <div className="container mx-auto px-4 md:px-6 flex items-center justify-between relative">
+                {/* Logo - Left */}
+                <div className="flex-shrink-0 z-20">
+                    <Link href="/" className="flex items-center gap-3 group">
+                        <motion.div
+                            whileHover={{ scale: 1.08, rotate: 5 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                        >
+                            <Image
+                                src="/images/logo.png"
+                                alt="CropFresh Logo"
+                                width={40}
+                                height={40}
+                                className="transition-all drop-shadow-lg"
+                            />
+                        </motion.div>
                         <Image
-                            src="/images/logo.png"
-                            alt="CropFresh Logo"
-                            width={40}
-                            height={40}
-                            className="transition-all drop-shadow-lg"
+                            src="/images/logo-text.png"
+                            alt="CropFresh"
+                            width={120}
+                            height={30}
+                            className="hidden sm:block"
                         />
-                    </motion.div>
-                    <Image
-                        src="/images/logo-text.png"
-                        alt="CropFresh"
-                        width={120}
-                        height={30}
-                        className="hidden sm:block"
-                    />
-                </Link>
+                    </Link>
+                </div>
 
-                {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-8">
+                {/* Desktop Navigation - Centered */}
+                <nav className="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     {navItems.map((item) => {
-                        const href = `#${item.toLowerCase()}`;
+                        const href = item === 'Home' ? '/' : `#${item.toLowerCase()}`;
                         const isActive = activeSection === item.toLowerCase();
 
                         return (
@@ -94,16 +96,18 @@ export default function Header() {
                             </Link>
                         );
                     })}
+                </nav>
 
-                    {/* Glassmorphic CTA Button */}
+                {/* CTA Button - Right */}
+                <div className="hidden md:block flex-shrink-0 z-20">
                     <Link href="#early-access">
                         <motion.div
                             whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.98 }}
                             className="relative px-6 py-2.5 rounded-full font-bold overflow-hidden group"
                             style={{
-                                background: 'linear-gradient(135deg, #FF6B35 0%, #2D882D 100%)',
-                                boxShadow: '0 4px 20px rgba(255, 107, 53, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2)'
+                                background: 'linear-gradient(135deg, var(--color-primary-orange) 0%, var(--color-primary-green) 100%)',
+                                boxShadow: '0 4px 20px rgba(249, 115, 22, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2)'
                             }}
                         >
                             <span className="relative z-10 text-white flex items-center gap-2">
@@ -120,12 +124,12 @@ export default function Header() {
                             />
                         </motion.div>
                     </Link>
-                </nav>
+                </div>
 
                 {/* Mobile Menu Button */}
                 <motion.button
                     whileTap={{ scale: 0.9 }}
-                    className="md:hidden text-neutral-gray relative z-10 p-2"
+                    className="md:hidden text-neutral-gray relative z-20 p-2 ml-auto"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
                     <AnimatePresence mode="wait">
@@ -158,11 +162,11 @@ export default function Header() {
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="absolute top-full left-0 right-0 md:hidden mt-2 mx-4 rounded-2xl overflow-hidden glass-panel"
+                        initial={{ opacity: 0, y: -20, scale: 0.95, filter: 'blur(10px)' }}
+                        animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, y: -20, scale: 0.95, filter: 'blur(10px)' }}
+                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                        className="absolute top-full left-0 right-0 md:hidden mt-2 mx-4 rounded-2xl overflow-hidden glass-panel border border-white/40 shadow-2xl"
                     >
                         <nav className="flex flex-col gap-1 p-4">
                             {navItems.map((item, index) => (
@@ -173,7 +177,7 @@ export default function Header() {
                                     transition={{ delay: index * 0.08, duration: 0.3 }}
                                 >
                                     <Link
-                                        href={`#${item.toLowerCase()}`}
+                                        href={item === 'Home' ? '/' : `#${item.toLowerCase()}`}
                                         className="block text-neutral-gray hover:text-primary-green font-medium py-3 px-4 rounded-xl hover:bg-primary-green/5 transition-all duration-200"
                                         onClick={() => setIsMobileMenuOpen(false)}
                                     >
@@ -190,13 +194,13 @@ export default function Header() {
                             >
                                 <Link
                                     href="#early-access"
-                                    className="block text-center px-6 py-3.5 rounded-xl font-bold text-white shadow-lg"
+                                    className="block text-center px-6 py-3.5 rounded-xl font-bold text-white shadow-lg relative overflow-hidden"
                                     style={{
-                                        background: 'linear-gradient(135deg, #FF6B35 0%, #2D882D 100%)'
+                                        background: 'linear-gradient(135deg, var(--color-primary-orange) 0%, var(--color-primary-green) 100%)'
                                     }}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
-                                    Get Early Access
+                                    <span className="relative z-10">Get Early Access</span>
                                 </Link>
                             </motion.div>
                         </nav>

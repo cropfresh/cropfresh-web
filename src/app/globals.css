@@ -6,56 +6,65 @@
 }
 
 @theme {
-  --color-primary-orange: #FF6B35;
-  --color-primary-green: #2D882D;
-  --color-dark-green: #1B5E1F;
-  --color-neutral-gray: #2C3E50;
-  --color-background-light: #F8F9FA;
+  --color-primary-orange: #F97316; /* More vibrant orange */
+  --color-primary-green: #15803d; /* Deeper, richer green */
+  --color-dark-green: #14532d;
+  --color-neutral-gray: #1e293b; /* Slate-800 for better contrast */
+  --color-background-light: #F8FAFC; /* Slate-50 */
   --color-success: #10B981;
   --color-warning: #F59E0B;
-  --color-glass-border: rgba(255, 255, 255, 0.2);
+  --color-accent: #0ea5e9; /* Sky blue for accents */
+  
+  --color-glass-border: rgba(255, 255, 255, 0.5);
   --color-glass-bg: rgba(255, 255, 255, 0.7);
 
   --font-sans: var(--font-inter);
   --font-display: var(--font-space-grotesk);
   --font-futuristic: var(--font-dm-sans);
   
-  --animate-fade-in: fade-in 0.5s ease-out forwards;
-  --animate-slide-up: slide-up 0.5s ease-out forwards;
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-fade-in: fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slide-up: slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.5s linear infinite;
+  --animate-blob-bounce: blob-bounce 10s ease-in-out infinite;
 }
 
 /* Glassmorphic Utilities */
 @layer utilities {
   .glass-effect {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+      0 10px 15px -3px rgba(0, 0, 0, 0.05),
+      inset 0 0 20px rgba(255, 255, 255, 0.5);
   }
 
   .glass-panel {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 
+      0 20px 25px -5px rgba(0, 0, 0, 0.05), 
+      0 8px 10px -6px rgba(0, 0, 0, 0.01);
   }
   
   .text-gradient {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(to right, var(--color-primary-green), var(--color-primary-orange));
+    background-image: linear-gradient(135deg, var(--color-primary-green), var(--color-primary-orange));
   }
 }
 
@@ -66,13 +75,14 @@
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-15px) rotate(2deg); }
+  66% { transform: translateY(10px) rotate(-2deg); }
 }
 
 @keyframes shimmer {
@@ -80,10 +90,16 @@
   100% { background-position: 200% center; }
 }
 
+@keyframes blob-bounce {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f172a;
+    --foreground: #f1f5f9;
   }
 }
 
