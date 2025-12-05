@@ -180,11 +180,12 @@ export default function EarlyAccess() {
                                                     })}
                                                     type="text"
                                                     id="name"
-                                                    className={`w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.name
+                                                    className={`w-full pl-12 pr-4 py-3.5 rounded-xl border text-black ${errors.name
                                                         ? 'border-red-500 focus:ring-red-500'
                                                         : 'border-gray-300 focus:ring-primary-green focus:border-primary-green'
                                                         } focus:outline-none focus:ring-2 transition-all`}
                                                     placeholder="John Doe"
+                                                    style={{ color: 'black', backgroundColor: 'white' }}
                                                 />
                                             </div>
                                             {errors.name && (
@@ -209,11 +210,12 @@ export default function EarlyAccess() {
                                                 })}
                                                 type="email"
                                                 id="email"
-                                                className={`w-full px-4 py-3.5 rounded-xl border ${errors.email
+                                                className={`w-full px-4 py-3.5 rounded-xl border text-black ${errors.email
                                                     ? 'border-red-500 focus:ring-red-500'
                                                     : 'border-gray-300 focus:ring-primary-green focus:border-primary-green'
                                                     } focus:outline-none focus:ring-2 transition-all`}
                                                 placeholder="name@company.com"
+                                                style={{ color: 'black', backgroundColor: 'white' }}
                                             />
                                             {errors.email && (
                                                 <p className="text-red-500 text-sm mt-1.5">{errors.email.message}</p>
@@ -239,12 +241,13 @@ export default function EarlyAccess() {
                                                     })}
                                                     type="tel"
                                                     id="phone"
-                                                    className={`w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.phone
+                                                    className={`w-full pl-12 pr-4 py-3.5 rounded-xl border text-black ${errors.phone
                                                         ? 'border-red-500 focus:ring-red-500'
                                                         : 'border-gray-300 focus:ring-primary-green focus:border-primary-green'
                                                         } focus:outline-none focus:ring-2 transition-all`}
                                                     placeholder="9876543210"
                                                     maxLength={10}
+                                                    style={{ color: 'black', backgroundColor: 'white' }}
                                                 />
                                             </div>
                                             {errors.phone && (
@@ -271,11 +274,12 @@ export default function EarlyAccess() {
                                                     })}
                                                     type="text"
                                                     id="location"
-                                                    className={`w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.location
+                                                    className={`w-full pl-12 pr-4 py-3.5 rounded-xl border text-black ${errors.location
                                                         ? 'border-red-500 focus:ring-red-500'
                                                         : 'border-gray-300 focus:ring-primary-green focus:border-primary-green'
                                                         } focus:outline-none focus:ring-2 transition-all`}
                                                     placeholder="Bangalore, Karnataka"
+                                                    style={{ color: 'black', backgroundColor: 'white' }}
                                                 />
                                             </div>
                                             {errors.location && (
@@ -295,7 +299,7 @@ export default function EarlyAccess() {
                                                 <select
                                                     {...register('role', { required: 'Please select a role' })}
                                                     id="role"
-                                                    className={`w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.role
+                                                    className={`w-full pl-12 pr-4 py-3.5 rounded-xl border text-black ${errors.role
                                                         ? 'border-red-500 focus:ring-red-500'
                                                         : 'border-gray-300 focus:ring-primary-green focus:border-primary-green'
                                                         } focus:outline-none focus:ring-2 transition-all bg-white appearance-none cursor-pointer`}
@@ -303,7 +307,9 @@ export default function EarlyAccess() {
                                                         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
                                                         backgroundRepeat: 'no-repeat',
                                                         backgroundPosition: 'right 1rem center',
-                                                        backgroundSize: '20px'
+                                                        backgroundSize: '20px',
+                                                        color: 'black',
+                                                        backgroundColor: 'white'
                                                     }}
                                                 >
                                                     <option value="">Select your role</option>

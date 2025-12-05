@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Twitter, Linkedin, Instagram, Mail } from 'lucide-react';
+import { Twitter, Linkedin, Instagram, Facebook, Mail, MapPin } from 'lucide-react';
 
 export default function Footer() {
     return (
@@ -26,10 +26,17 @@ export default function Footer() {
                             Revolutionizing the fresh produce supply chain with data-driven logistics and fair pricing for farmers.
                         </p>
                         <div className="flex gap-4">
-                            {[Twitter, Linkedin, Instagram].map((Icon, i) => (
+                            {[
+                                { Icon: Instagram, href: 'https://www.instagram.com/cropfresh.in/' },
+                                { Icon: Twitter, href: 'https://x.com/Cropfresh_in' },
+                                { Icon: Linkedin, href: 'https://www.linkedin.com/company/cropfresh' },
+                                { Icon: Facebook, href: 'https://www.facebook.com/cropfresh' }
+                            ].map(({ Icon, href }, i) => (
                                 <a
                                     key={i}
-                                    href="#"
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary-orange transition-colors"
                                 >
                                     <Icon size={18} />
@@ -69,11 +76,11 @@ export default function Footer() {
                         <ul className="space-y-3 text-gray-400 text-sm">
                             <li className="flex items-center gap-2">
                                 <Mail size={16} className="text-primary-orange" />
-                                <span>hello@cropfresh.com</span>
+                                <span>shrikantha@cropfresh.in</span>
                             </li>
-                            <li>
-                                123 AgriTech Blvd, Suite 400<br />
-                                San Francisco, CA 94107
+                            <li className="flex items-start gap-2">
+                                <MapPin size={16} className="text-primary-orange mt-1 flex-shrink-0" />
+                                <span>Bangarpet, kolar, karnataka, india 563114</span>
                             </li>
                         </ul>
                     </div>

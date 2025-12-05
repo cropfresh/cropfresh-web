@@ -1,87 +1,97 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { AlertTriangle, TrendingDown, Clock, ArrowDown, UserX, ShoppingBag } from 'lucide-react';
+import { AlertTriangle, TrendingDown, Clock, ArrowRight, UserX, ShoppingBag, XCircle } from 'lucide-react';
 
 const mainProblems = [
     {
         icon: AlertTriangle,
         stat: "₹92,000 Cr",
         title: "Annual Wastage",
-        description: "40% of produce rots before reaching consumers due to fragmented logistics and zero pre-harvest planning."
+        description: "Produce rots before reaching consumers due to fragmented logistics.",
+        color: "text-red-600",
+        bg: "bg-red-50",
+        border: "border-red-100"
     },
     {
         icon: TrendingDown,
         stat: "40-60%",
         title: "Value Lost",
-        description: "Farmers lose over half their crop value to middlemen exploitation and distress sales."
+        description: "Farmers lose over half their crop value to middlemen exploitation.",
+        color: "text-orange-600",
+        bg: "bg-orange-50",
+        border: "border-orange-100"
     },
     {
         icon: Clock,
-        stat: "30-45 Days",
+        stat: "45 Days",
         title: "Payment Delays",
-        description: "Long waiting periods for payments push farmers into severe debt cycles and financial instability."
+        description: "Long waiting periods push farmers into severe debt cycles.",
+        color: "text-amber-600",
+        bg: "bg-amber-50",
+        border: "border-amber-100"
     }
 ];
 
 const farmerProblems = [
     "Distress sales due to no pre-harvest buyers",
-    "40–60% loss of crop value because of middlemen",
-    "Payment delays of 30–45 days push farmers into debt cycles",
     "Zero reliable access to logistics",
-    "No information on market demand, prices, or overproduction risks",
-    "Wastage and spoilage of nearly ₹92,000 crore per year"
+    "No information on market demand",
+    "Exploitative middleman commissions"
 ];
 
 const buyerProblems = [
-    "Inconsistent supply chains disrupting operations",
-    "Unpredictable pricing due to market volatility",
-    "Quality fluctuations and lack of standardization",
-    "No standardized grading or certification",
-    "15–20% procurement cost lost to intermediaries",
-    "No real-time visibility into nearby farmers"
+    "Inconsistent supply chains",
+    "Quality fluctuations & lack of grading",
+    "15–20% procurement cost lost",
+    "No real-time visibility of stock"
 ];
 
 export default function ProblemStatement() {
     return (
-        <section className="py-24 bg-neutral-gray text-white relative overflow-hidden">
-            {/* Background Elements */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div className="absolute -top-24 -right-24 w-96 h-96 bg-red-500/5 rounded-full blur-3xl"></div>
-                <div className="absolute top-1/2 -left-24 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl"></div>
+        <section id="problems" className="py-32 bg-[#FFFBF0] relative overflow-hidden">
+            {/* Organic Background Elements */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-orange-200/20 rounded-full blur-[120px] animate-blob-bounce" />
+                <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-red-200/20 rounded-full blur-[100px] animate-blob-bounce" style={{ animationDelay: '2s' }} />
+                <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-[0.02]" />
             </div>
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
-                <div className="text-center max-w-3xl mx-auto mb-20">
+                {/* Header */}
+                <div className="text-center max-w-4xl mx-auto mb-20">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-block px-4 py-1 rounded-full bg-red-500/10 text-red-400 font-medium text-sm mb-6 border border-red-500/20"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 border border-red-100 text-red-600 font-medium text-sm mb-8 shadow-sm"
                     >
-                        The Broken System
+                        <AlertTriangle size={16} />
+                        <span>The Broken System</span>
                     </motion.div>
+
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-3xl md:text-5xl font-bold font-display mb-6"
+                        className="text-4xl md:text-6xl font-bold font-display text-neutral-gray mb-8 leading-tight"
                     >
-                        Agriculture is in <span className="text-red-500">Crisis</span>
+                        Agriculture is in <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600">Crisis</span>
                     </motion.h2>
+
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="text-gray-400 text-lg"
+                        className="text-gray-600 text-xl leading-relaxed max-w-2xl mx-auto"
                     >
                         The current supply chain is failing both the people who grow our food and the businesses that sell it.
                     </motion.p>
                 </div>
 
-                {/* Main Stats Grid */}
+                {/* Bento Grid Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
                     {mainProblems.map((item, index) => (
                         <motion.div
@@ -90,43 +100,53 @@ export default function ProblemStatement() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 + 0.3 }}
-                            className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors group"
+                            whileHover={{ y: -8 }}
+                            className={`bg-white p-8 rounded-[2rem] border ${item.border} shadow-xl shadow-orange-900/5 relative overflow-hidden group h-full flex flex-col`}
                         >
-                            <div className="mb-6 relative inline-block">
-                                <div className="absolute inset-0 bg-red-500/20 blur-xl rounded-full animate-pulse"></div>
-                                <item.icon size={40} className="text-red-500 relative z-10" />
+                            <div className={`absolute inset-0 ${item.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+                            <div className="relative z-10 flex-1 flex flex-col">
+                                <div className={`w-16 h-16 rounded-2xl ${item.bg} flex items-center justify-center ${item.color} mb-6 shadow-sm`}>
+                                    <item.icon size={32} />
+                                </div>
+                                <h3 className="text-5xl font-bold font-display text-neutral-gray mb-3 tracking-tight">
+                                    {item.stat}
+                                </h3>
+                                <h4 className={`text-xl font-bold ${item.color} mb-4`}>{item.title}</h4>
+                                <p className="text-gray-600 leading-relaxed text-lg">
+                                    {item.description}
+                                </p>
                             </div>
-                            <h3 className="text-4xl md:text-5xl font-bold font-display text-white mb-2 group-hover:text-red-400 transition-colors">
-                                {item.stat}
-                            </h3>
-                            <h4 className="text-xl font-bold text-gray-200 mb-3">{item.title}</h4>
-                            <p className="text-gray-400 leading-relaxed">
-                                {item.description}
-                            </p>
                         </motion.div>
                     ))}
                 </div>
 
-                {/* Detailed Problems Split */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+                {/* Split Problem View */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                     {/* Farmers Side */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.4 }}
+                        className="bg-white p-8 md:p-12 rounded-[2.5rem] border border-orange-100 shadow-2xl shadow-orange-900/5 relative overflow-hidden h-full"
                     >
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center text-primary-orange">
-                                <UserX size={24} />
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-50 rounded-full blur-[80px] -mr-16 -mt-16 opacity-60" />
+
+                        <div className="flex items-center gap-4 mb-8 relative z-10">
+                            <div className="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center text-primary-orange shadow-sm">
+                                <UserX size={28} />
                             </div>
-                            <h3 className="text-2xl font-bold font-display">Farmers Face Severe Losses</h3>
+                            <h3 className="text-3xl font-bold font-display text-neutral-gray">Farmers Face Losses</h3>
                         </div>
-                        <ul className="space-y-4">
+
+                        <ul className="space-y-6 relative z-10">
                             {farmerProblems.map((problem, i) => (
-                                <li key={i} className="flex items-start gap-3 text-gray-300">
-                                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
-                                    <span>{problem}</span>
+                                <li key={i} className="flex items-start gap-4 text-gray-600 group">
+                                    <div className="mt-1 w-6 h-6 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0 group-hover:bg-red-100 transition-colors">
+                                        <XCircle size={16} className="text-red-500" />
+                                    </div>
+                                    <span className="text-lg font-medium">{problem}</span>
                                 </li>
                             ))}
                         </ul>
@@ -138,18 +158,24 @@ export default function ProblemStatement() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.5 }}
+                        className="bg-white p-8 md:p-12 rounded-[2.5rem] border border-blue-100 shadow-2xl shadow-blue-900/5 relative overflow-hidden h-full"
                     >
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
-                                <ShoppingBag size={24} />
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-50 rounded-full blur-[80px] -ml-16 -mb-16 opacity-60" />
+
+                        <div className="flex items-center gap-4 mb-8 relative z-10">
+                            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 shadow-sm">
+                                <ShoppingBag size={28} />
                             </div>
-                            <h3 className="text-2xl font-bold font-display">Buyers Struggle with Reliability</h3>
+                            <h3 className="text-3xl font-bold font-display text-neutral-gray">Buyers Lack Reliability</h3>
                         </div>
-                        <ul className="space-y-4">
+
+                        <ul className="space-y-6 relative z-10">
                             {buyerProblems.map((problem, i) => (
-                                <li key={i} className="flex items-start gap-3 text-gray-300">
-                                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
-                                    <span>{problem}</span>
+                                <li key={i} className="flex items-start gap-4 text-gray-600 group">
+                                    <div className="mt-1 w-6 h-6 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0 group-hover:bg-red-100 transition-colors">
+                                        <XCircle size={16} className="text-red-500" />
+                                    </div>
+                                    <span className="text-lg font-medium">{problem}</span>
                                 </li>
                             ))}
                         </ul>
@@ -166,10 +192,10 @@ export default function ProblemStatement() {
                 >
                     <a
                         href="#solutions"
-                        className="inline-flex items-center gap-2 text-primary-green font-bold hover:text-white transition-colors group"
+                        className="inline-flex items-center gap-3 text-white font-bold text-lg hover:shadow-lg hover:shadow-primary-green/30 transition-all group px-10 py-5 rounded-full bg-gradient-to-r from-primary-green to-green-600 transform hover:-translate-y-1"
                     >
                         See How We Solve This
-                        <ArrowDown className="group-hover:translate-y-1 transition-transform" size={20} />
+                        <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
                     </a>
                 </motion.div>
             </div>

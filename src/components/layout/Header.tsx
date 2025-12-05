@@ -16,7 +16,7 @@ export default function Header() {
             setIsScrolled(window.scrollY > 20);
 
             // Update active section based on scroll position
-            const sections = ['home', 'problems', 'solutions', 'impact', 'faq', 'about'];
+            const sections = ['home', 'problems', 'solutions', 'how-it-works', 'faq'];
             const current = sections.find(section => {
                 const element = document.getElementById(section);
                 if (element) {
@@ -32,7 +32,7 @@ export default function Header() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const navItems = ['Home', 'Problems', 'Solutions', 'Impact', 'FAQ', 'About'];
+    const navItems = ['Home', 'Problems', 'Solutions', 'How it Works', 'FAQ', 'About'];
 
     return (
         <header
@@ -70,8 +70,14 @@ export default function Header() {
                 {/* Desktop Navigation - Centered */}
                 <nav className="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     {navItems.map((item) => {
-                        const href = item === 'Home' ? '/' : `#${item.toLowerCase()}`;
-                        const isActive = activeSection === item.toLowerCase();
+                        let href = '';
+                        if (item === 'Home') href = '/';
+                        else if (item === 'About') href = '/about';
+                        else href = `#${item.toLowerCase().replace(/\s+/g, '-')}`;
+
+                        const isActive = item === 'About'
+                            ? false // TODO: Check pathname for About page
+                            : activeSection === item.toLowerCase().replace(/\s+/g, '-');
 
                         return (
                             <Link
@@ -169,22 +175,29 @@ export default function Header() {
                         className="absolute top-full left-0 right-0 md:hidden mt-2 mx-4 rounded-2xl overflow-hidden glass-panel border border-white/40 shadow-2xl"
                     >
                         <nav className="flex flex-col gap-1 p-4">
-                            {navItems.map((item, index) => (
-                                <motion.div
-                                    key={item}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: index * 0.08, duration: 0.3 }}
-                                >
-                                    <Link
-                                        href={item === 'Home' ? '/' : `#${item.toLowerCase()}`}
-                                        className="block text-neutral-gray hover:text-primary-green font-medium py-3 px-4 rounded-xl hover:bg-primary-green/5 transition-all duration-200"
-                                        onClick={() => setIsMobileMenuOpen(false)}
+                            {navItems.map((item, index) => {
+                                let href = '';
+                                if (item === 'Home') href = '/';
+                                else if (item === 'About') href = '/about';
+                                else href = `#${item.toLowerCase().replace(/\s+/g, '-')}`;
+
+                                return (
+                                    <motion.div
+                                        key={item}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: index * 0.08, duration: 0.3 }}
                                     >
-                                        {item}
-                                    </Link>
-                                </motion.div>
-                            ))}
+                                        <Link
+                                            href={href}
+                                            className="block text-neutral-gray hover:text-primary-green font-medium py-3 px-4 rounded-xl hover:bg-primary-green/5 transition-all duration-200"
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                        >
+                                            {item}
+                                        </Link>
+                                    </motion.div>
+                                )
+                            })}
 
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}

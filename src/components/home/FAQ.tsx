@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, MessageCircle, Plus, Minus } from 'lucide-react';
+import { ChevronDown, MessageCircle, Sparkles, Search } from 'lucide-react';
 
 const faqData = {
     farmers: [
@@ -124,10 +124,10 @@ const faqData = {
 };
 
 const categoryNames = {
-    farmers: { en: "For Farmers", kn: "ರೈತರಿಗೆ" },
-    buyers: { en: "For Buyers", kn: "ವ್ಯಾಪಾರಿಗಳಿಗೆ" },
-    haulers: { en: "For Haulers", kn: "ಲಾರಿ ಮತ್ತು ಟೆಂಪೋ ಚಾಲಕರಿಗೆ" },
-    general: { en: "Platform & General", kn: "ವೇದಿಕೆ ಮತ್ತು ಸಾಮಾನ್ಯ" }
+    farmers: { en: "For Farmers", kn: "ರೈತರಿಗೆ", icon: "🌾" },
+    buyers: { en: "For Buyers", kn: "ವ್ಯಾಪಾರಿಗಳಿಗೆ", icon: "🛒" },
+    haulers: { en: "For Haulers", kn: "ಚಾಲಕರಿಗೆ", icon: "🚚" },
+    general: { en: "General", kn: "ಸಾಮಾನ್ಯ", icon: "💡" }
 };
 
 interface FAQItemProps {
@@ -140,22 +140,29 @@ function FAQItem({ item, index }: FAQItemProps) {
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="glass-card rounded-2xl overflow-hidden border border-white/60 mb-4"
+            className={`group rounded-2xl overflow-hidden border transition-all duration-300 ${isOpen
+                    ? 'bg-white/80 border-primary-green/30 shadow-lg shadow-primary-green/5'
+                    : 'bg-white/40 border-white/60 hover:bg-white/60 hover:border-white/80'
+                }`}
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/40 transition-colors"
+                className="w-full px-6 py-5 flex items-center justify-between text-left"
             >
                 <div className="flex-1 pr-4">
-                    <div className="font-bold text-neutral-gray mb-1 text-lg">{item.question}</div>
-                    <div className="text-sm text-gray-500">{item.questionKn}</div>
+                    <div className={`font-bold text-lg mb-1 transition-colors ${isOpen ? 'text-primary-green' : 'text-neutral-gray'}`}>
+                        {item.question}
+                    </div>
+                    <div className="text-sm text-gray-500 font-medium">{item.questionKn}</div>
                 </div>
-                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-primary-green text-white rotate-180' : 'bg-gray-100 text-gray-500'}`}>
-                    {isOpen ? <Minus size={18} /> : <Plus size={18} />}
+                <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${isOpen
+                        ? 'bg-primary-green text-white rotate-180 shadow-md shadow-primary-green/20'
+                        : 'bg-white text-gray-400 group-hover:text-primary-green group-hover:bg-primary-green/10'
+                    }`}>
+                    <ChevronDown size={20} />
                 </div>
             </button>
 
@@ -165,12 +172,18 @@ function FAQItem({ item, index }: FAQItemProps) {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
                         className="overflow-hidden"
                     >
-                        <div className="px-6 pb-6 pt-2 border-t border-gray-100/50">
-                            <p className="text-gray-700 mb-3 leading-relaxed">{item.answer}</p>
-                            <p className="text-gray-500 text-sm italic">{item.answerKn}</p>
+                        <div className="px-6 pb-6 pt-2">
+                            <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-4" />
+                            <div className="space-y-3">
+                                <p className="text-gray-700 leading-relaxed text-[15px]">{item.answer}</p>
+                                <div className="flex items-start gap-2 text-gray-500 text-sm italic bg-gray-50/50 p-3 rounded-lg border border-gray-100/50">
+                                    <span className="text-xs font-bold uppercase tracking-wider text-primary-orange/80 mt-0.5">KN</span>
+                                    {item.answerKn}
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 )}
@@ -180,71 +193,108 @@ function FAQItem({ item, index }: FAQItemProps) {
 }
 
 export default function FAQ() {
+    const [activeTab, setActiveTab] = useState<keyof typeof faqData>('farmers');
+
     return (
-        <section className="py-24 relative overflow-hidden">
+        <section id="faq" className="py-24 relative overflow-hidden">
             {/* Background Elements */}
             <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white to-background-light" />
-            <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-primary-green/5 rounded-full blur-[100px]" />
-            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary-orange/5 rounded-full blur-[100px]" />
+            <div className="absolute top-1/3 left-0 w-[600px] h-[600px] bg-primary-green/5 rounded-full blur-[120px] animate-pulse-slow" />
+            <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-primary-orange/5 rounded-full blur-[120px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
+
+            {/* Mesh Grid Overlay */}
+            <div className="absolute inset-0 -z-10 opacity-[0.02]"
+                style={{
+                    backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)',
+                    backgroundSize: '40px 40px'
+                }}
+            />
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
                 {/* Header */}
-                <div className="text-center max-w-3xl mx-auto mb-16">
+                <div className="text-center max-w-3xl mx-auto mb-12">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="w-16 h-16 bg-primary-green/10 rounded-full flex items-center justify-center mx-auto mb-6"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-green/10 text-primary-green font-bold text-sm mb-6"
                     >
-                        <MessageCircle size={32} className="text-primary-green" />
+                        <Sparkles size={16} />
+                        <span>Support Center</span>
                     </motion.div>
+
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-3xl md:text-5xl font-bold font-display text-neutral-gray mb-4"
+                        className="text-4xl md:text-5xl font-bold font-display text-neutral-gray mb-6"
                     >
                         Frequently Asked Questions
                     </motion.h2>
-                    <motion.p
+
+                    {/* AI Search Placeholder */}
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-lg text-gray-600"
+                        className="relative max-w-lg mx-auto"
                     >
-                        ಪದೇ ಪದೇ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು
-                    </motion.p>
+                        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                            <Search className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Ask CropFresh AI anything..."
+                            className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-green/20 focus:border-primary-green transition-all shadow-sm text-gray-700 placeholder:text-gray-400"
+                            readOnly
+                        />
+                        <div className="absolute inset-y-0 right-2 flex items-center">
+                            <span className="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-md border border-gray-200">AI Beta</span>
+                        </div>
+                    </motion.div>
                 </div>
 
-                <div className="max-w-4xl mx-auto space-y-12">
-                    {Object.entries(faqData).map(([category, items]) => (
-                        <div key={category}>
-                            <motion.h3
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                className="text-2xl font-bold font-display text-neutral-gray mb-6 flex items-center gap-3"
-                            >
-                                <span className="text-2xl">
-                                    {category === 'farmers' && '🌾'}
-                                    {category === 'buyers' && '🛒'}
-                                    {category === 'haulers' && '🚚'}
-                                    {category === 'general' && '💡'}
-                                </span>
-                                <span>{categoryNames[category as keyof typeof categoryNames].en}</span>
-                                <span className="text-gray-400 text-lg font-normal">
-                                    / {categoryNames[category as keyof typeof categoryNames].kn}
-                                </span>
-                            </motion.h3>
-
-                            <div className="space-y-1">
-                                {items.map((item, index) => (
-                                    <FAQItem key={index} item={item} index={index} />
-                                ))}
-                            </div>
-                        </div>
+                {/* Tabs Navigation */}
+                <div className="flex flex-wrap justify-center gap-2 mb-12">
+                    {Object.entries(categoryNames).map(([key, label]) => (
+                        <button
+                            key={key}
+                            onClick={() => setActiveTab(key as keyof typeof faqData)}
+                            className={`relative px-6 py-3 rounded-full text-sm md:text-base font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === key
+                                    ? 'text-white shadow-lg shadow-primary-green/25 scale-105'
+                                    : 'text-gray-500 hover:text-gray-700 hover:bg-white/50'
+                                }`}
+                        >
+                            {activeTab === key && (
+                                <motion.div
+                                    layoutId="activeTab"
+                                    className="absolute inset-0 bg-gradient-to-r from-primary-green to-[#166534] rounded-full"
+                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                />
+                            )}
+                            <span className="relative z-10 text-lg">{label.icon}</span>
+                            <span className="relative z-10">{label.en}</span>
+                        </button>
                     ))}
+                </div>
+
+                {/* FAQ Items */}
+                <div className="max-w-3xl mx-auto min-h-[400px]">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeTab}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            transition={{ duration: 0.3 }}
+                            className="space-y-4"
+                        >
+                            {faqData[activeTab].map((item, index) => (
+                                <FAQItem key={index} item={item} index={index} />
+                            ))}
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
 
                 {/* Bottom CTA */}
@@ -259,9 +309,10 @@ export default function FAQ() {
                     </p>
                     <a
                         href="#early-access"
-                        className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary-green to-green-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg hover:shadow-primary-green/30 transition-all transform hover:-translate-y-1"
+                        className="inline-flex items-center justify-center gap-2 bg-white text-primary-green border border-primary-green/20 px-8 py-4 rounded-full font-bold hover:bg-primary-green hover:text-white hover:shadow-lg hover:shadow-primary-green/30 transition-all transform hover:-translate-y-1 group"
                     >
-                        Get Early Access / ಆರಂಭಿಕ ಪ್ರವೇಶ ಪಡೆಯಿರಿ
+                        <MessageCircle size={20} className="group-hover:animate-bounce" />
+                        <span>Chat with Support</span>
                     </a>
                 </motion.div>
             </div>

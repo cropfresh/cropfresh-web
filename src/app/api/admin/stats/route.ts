@@ -52,11 +52,11 @@ export async function GET(request: NextRequest) {
             Array<{ date: Date; count: bigint }>
         >`
       SELECT 
-        DATE(created_at) as date,
+        "createdAt"::date as date,
         COUNT(*) as count
       FROM early_access_submissions
-      WHERE created_at >= ${sevenDaysAgo}
-      GROUP BY DATE(created_at)
+      WHERE "createdAt" >= ${sevenDaysAgo}
+      GROUP BY "createdAt"::date
       ORDER BY date ASC
     `;
 

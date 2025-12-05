@@ -100,6 +100,7 @@ export default function AdminDashboard() {
                                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-primary-green"
                                 placeholder="Enter admin password"
                                 required
+                                style={{ color: 'black', backgroundColor: 'white' }}
                             />
                         </div>
 
