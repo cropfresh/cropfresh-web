@@ -44,4 +44,5 @@ next-env.d.ts
 
 # local logs and tests
 *.log
+build_log.txt
 test-db-connection.ts
