@@ -21,8 +21,17 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "CropFresh | The Future of Fresh Produce Supply Chain",
+  title: "CropFresh",
   description: "Connecting farmers directly to retailers with data-driven logistics and fair pricing.",
+  icons: {
+    icon: [
+      { url: '/favicons/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicons/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+    ],
+    shortcut: '/favicons/favicon.ico',
+    apple: { url: '/favicons/apple-touch-icon.png', sizes: '180x180' },
+  },
+  manifest: '/favicons/site.webmanifest',
 };
 
 export default function RootLayout({
